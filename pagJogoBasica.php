@@ -1,12 +1,13 @@
 <?php include_once 'Jogo.php';
 
-$id = isset($_GET['id']) ? (int)$_GET['id'] : 1; 
-$jogo = new Jogo($id); 
+$id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT); if ($id === false || $id === null) { $id = 1; }
+try { $jogo = new Jogo($id); } 
+catch (Exception $e) { http_response_code(404); die("Jogo não encontrado."); }
 ?>
 
 <!DOCTYPE html>
 <html lang="pt-br">
-<title>Jogos<?php echo $jogo->getApelido(); ?></title> <!-- Título da página com o apelido do jogo -->
+<title>Jogos - <?php echo htmlspecialchars($jogo->getApelido(), ENT_QUOTES, 'UTF-8'); ?></title> <!-- Título da página com o apelido do jogo -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="icon" href="img/logo-etec-barretos.png" type="image/x-icon">
@@ -17,10 +18,11 @@ $jogo = new Jogo($id);
 <div class="w3-row">
   <div class="w3-half w3-light-grey w3-container w3-center" style="height:700px">
     <div class="w3-padding">
-      <h1><?php echo $jogo->getNome(); ?></h1> <!-- Exibe o nome do jogo -->
+      <h1><?php echo htmlspecialchars($jogo->getNome(), ENT_QUOTES, 'UTF-8'); ?></h1> <!-- Exibe o nome do jogo -->
     </div>
     <div class="w3-padding w3-card">
-        <img src="<?php echo $jogo->getImagemCapa()->getSrcImagem();?>" alt="" style="width:80%;"> <!-- Exibe a imagem de capa do jogo -->
+        <img src="<?php echo htmlspecialchars($jogo->getImagemCapa()->getSrcImagem(), ENT_QUOTES, 'UTF-8'); ?>"
+         alt="<?php echo htmlspecialchars($jogo->getNome(), ENT_QUOTES, 'UTF-8'); ?>" style="width:80%;"> <!-- Exibe a imagem de capa do jogo -->
     </div>
   </div>
   
@@ -29,7 +31,7 @@ $jogo = new Jogo($id);
     <div class="w3-padding-64 w3-center">
       <h1>SINOPSE</h1> <!-- Título da seção -->
       <div class="w3-rest w3-left-align w3-padding-large">
-            <p> <?php echo $jogo->getSinopse(); ?> </p> <!-- Exibe a sinopse do jogo -->
+            <p> <?php echo htmlspecialchars($jogo->getSinopse(), ENT_QUOTES, 'UTF-8'); ?> </p> <!-- Exibe a sinopse do jogo -->
       </div>
     </div>
   </div>
@@ -49,7 +51,8 @@ $jogo = new Jogo($id);
             echo '<div class="w3-row">';
           
           echo '<div class="w3-half">'; // Cada imagem ocupa metade da linha
-          echo '<img src="'.$imagem->getSrcImagem().'" style="width:100%">'; // Exibe a imagem
+          echo '<img src="' . htmlspecialchars($imagem->getSrcImagem(), ENT_QUOTES, 'UTF-8') . '" 
+          style="width:100%">'; // Exibe a imagem
           echo '</div>';
           
           $cont++; // Incrementa o contador
@@ -69,28 +72,28 @@ $jogo = new Jogo($id);
         <table class="w3-table-all w3-card w3-text-black"> <!-- Tabela com as informações do jogo -->
          <tr>
             <td>Lançamento</td>
-            <td><?php echo $jogo->getLancamento(); ?></td> <!-- Data de lançamento -->
+            <td><?php echo htmlspecialchars($jogo->getLancamento(), ENT_QUOTES, 'UTF-8'); ?></td> <!-- Data de lançamento -->
          </tr>
          <tr>
             <td>Distribuidora</td>
-            <td><?php echo $jogo->getDistribuidora(); ?></td> <!-- Nome da distribuidora -->
+            <td><?php echo htmlspecialchars($jogo->getDistribuidora(), ENT_QUOTES, 'UTF-8'); ?></td> <!-- Nome da distribuidora -->
          </tr>
          <tr>
             <td>Desenvolvedora</td>
-            <td><?php echo $jogo->getDesenvolvedora(); ?></td> <!-- Nome da desenvolvedora -->
+            <td><?php echo htmlspecialchars($jogo->getDesenvolvedora(), ENT_QUOTES, 'UTF-8'); ?></td> <!-- Nome da desenvolvedora -->
          </tr>
          <tr>
             <td>Classificação</td>
-            <td><?php echo $jogo->getClassificacao()->getClassificacao().' - '.
-            $jogo->getClassificacao()->getDescricao(); ?></td> <!-- Classificação etária do jogo -->
+            <td><?php echo htmlspecialchars($jogo->getClassificacao()->getClassificacao().' - '.
+            $jogo->getClassificacao()->getDescricao(), ENT_QUOTES, 'UTF-8'); ?></td> <!-- Classificação etária do jogo -->
          </tr>
          <tr>
             <td>Genero</td>
-            <td><?php echo $jogo->getGenero()->getNome(); ?></td> <!-- Gênero do jogo -->
+            <td><?php echo htmlspecialchars( $jogo->getGenero()->getNome(), ENT_QUOTES, 'UTF-8' ); ?></td> <!-- Gênero do jogo -->
          </tr>
          <tr>
             <td>Plataformas</td>
-            <td><?php echo $jogo->getPlataforma(); ?></td> <!-- Plataformas em que o jogo está disponível -->
+            <td><?php echo htmlspecialchars($jogo->getPlataforma(), ENT_QUOTES, 'UTF-8'); ?></td> <!-- Plataformas em que o jogo está disponível -->
          </tr>
         </table>
       </div>
@@ -100,7 +103,8 @@ $jogo = new Jogo($id);
 
 <!-- Rodapé -->
 <footer class="w3-container w3-blue-grey w3-padding-16 w3-center">
-  <p>Powered by <a href="https://etecbarretos.cps.sp.gov.br/desenvolvimento-de-sistemas/" target="_blank">ETEC</a></p> <!-- Texto do rodapé -->
+  <p>Powered by <a href="https://etecbarretos.cps.sp.gov.br/desenvolvimento-de-sistemas/" target="_blank"
+  rel="noopener noreferrer">ETEC</a></p> <!-- Texto do rodapé -->
 </footer>
 </body>
 </html>

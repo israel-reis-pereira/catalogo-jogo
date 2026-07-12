@@ -22,7 +22,7 @@ class Plataforma{
     public function setId($id){
         // Validação simples para garantir que id seja um número válido
         if (is_numeric($id)) {
-            $this->id = $id;
+            $this->id = (int)$id;
         } else {
             throw new InvalidArgumentException("ID deve ser um número.");
         }

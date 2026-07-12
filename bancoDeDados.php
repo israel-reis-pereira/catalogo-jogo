@@ -54,10 +54,11 @@ class BD {
         }
     }
 
-    public function consulta($sql) {
+    public function consulta($sql, $parametros = []) {
         try {
-            $con = $this->conexao->query($sql);
-            $res = $con->fetchAll(\PDO::FETCH_ASSOC);
+            $stmt = $this->conexao->prepare($sql);
+            $stmt->execute($parametros);
+            $res = $stmt->fetchAll(\PDO::FETCH_ASSOC);
             return $res;
         } catch (PDOException $e) {
             return [];

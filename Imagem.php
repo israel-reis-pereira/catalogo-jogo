@@ -14,21 +14,24 @@ class Imagem {
     public function __construct() {
         // Obtém o número de argumentos passados para o construtor
         $count = func_num_args();
-        
+
         // Se dois parâmetros forem passados (idJogo e idCategoria)
         if ($count == 2) {
-            // Cria um objeto da classe BD e realiza a conexão com o banco de dados
-            $bd = new BD();
-            $bd->conectar();      
-            
+
             // Obtém os parâmetros passados para o construtor
             $parametros = func_get_args();
+
+            $idJogo = (int)$parametros[0];
+            $idCategoria = (int)$parametros[1];
+
+            // Cria um objeto da classe BD e realiza a conexão com o banco de dados
+            $bd = new BD();
+            $bd->conectar();    
             
             // Executa uma consulta SQL para buscar a imagem no banco de dados
-            $res = $bd->consulta(
-                "select * from tblimagem where idJogo=" . $parametros[0] 
-                . " and idCategoria=" . $parametros[1]
-            );
+            $res = $bd->consulta( "SELECT * FROM tblimagem WHERE idJogo = :idJogo AND idCategoria = :idCategoria", 
+            [ 'idJogo' => $idJogo, 'idCategoria' => $idCategoria ] );
+            if (empty($res)) { throw new Exception("Imagem não encontrada."); }
             
             // Se a consulta retornar algum resultado, preenche os atributos com os dados obtidos
             $this->setId($res[0]["id"]);

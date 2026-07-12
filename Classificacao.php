@@ -11,12 +11,14 @@ class Classificacao {
 
     // Construtor da classe que recebe um ID e carrega os dados da classificação correspondente do banco de dados
     public function __construct($id) {
+        $id = (int)$id;
         // Criação de um objeto da classe BD para conectar ao banco de dados
         $bd = new BD();
         $bd->conectar();  // Estabelece a conexão com o banco de dados
         
         // Consulta ao banco de dados para buscar os dados da classificação com o ID fornecido
-        $res = $bd->consulta("select * from tblclassificacao where id=$id");
+        $res = $bd->consulta( "SELECT * FROM tblclassificacao WHERE id = :id", [ 'id' => $id ] );
+        if (empty($res)) { throw new Exception("Classificação não encontrada."); }
         
         // Preenche os atributos da classe com os dados obtidos da consulta
         $this->setId($res[0]["id"]);

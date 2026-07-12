@@ -23,11 +23,13 @@ class Jogo {
 
     // Construtor da classe que inicializa os atributos com os dados do banco de dados
     public function __construct($id){
+        $id = (int)$id;
         $bd = new BD();
         $bd->conectar();
         
         // Consulta SQL para buscar dados do jogo no banco de dados
-        $res = $bd->consulta("select * from tbljogo where id=$id");
+        $res = $bd->consulta( "SELECT * FROM tbljogo WHERE id = :id", [ 'id' => $id ] );
+        if (empty($res)) { throw new Exception("Jogo não encontrado."); }
         
         // Preenche os atributos com os dados retornados
         $this->setId($res[0]["id"]);
@@ -116,7 +118,7 @@ class Jogo {
         $bd->conectar();
         
         // Consulta para buscar imagens da galeria (idCategoria = 2)
-        $res = $bd->consulta("select * from tblimagem where idJogo=$this->id and idCategoria = 2");
+        $res = $bd->consulta( "SELECT * FROM tblimagem WHERE idJogo = :id AND idCategoria = :categoria", [ 'id' => $this->id, 'categoria' => 2 ] );
         $galeria = array();
         
         // Preenche a galeria com objetos da classe Imagem
@@ -143,7 +145,7 @@ class Jogo {
         $res = $bd->consulta("select tblplataforma.* from tblplataforma ".
             "inner join tbljogoplataforma ".
             "ON tblplataforma.id = tbljogoplataforma.idPlataforma ".
-            "where tbljogoplataforma.idJogo=$id;");
+            "WHERE tbljogoplataforma.idJogo = :id;",['id'=>$id]);
         
         $plataformas = array();
         
