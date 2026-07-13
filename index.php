@@ -16,7 +16,7 @@
 </head>
 <body>
 <div class="w3-row"> <!-- Inicia uma linha para organizar os elementos na tela -->
-  <?php foreach($jogos as $jogo){ ?>
+  <?php foreach($jogos as $jogo): ?>
     <!-- Primeiro bloco de exibição de jogo -->
     <div class="w3-quarter w3-padding"> <!-- Cada div com 'w3-quarter' ocupa um quarto da tela, com padding para espaçamento -->
         <div class="w3-display-container"> <!-- Usado para posicionamento de elementos dentro da imagem -->
@@ -25,7 +25,7 @@
             alt="<?php echo htmlspecialchars($jogo->getNome(), ENT_QUOTES, 'UTF-8'); ?>" style="width:100%">
             
             <!-- Exibe a plataforma do jogo, sendo dinamicamente inserido -->
-            <span class="w3-tag w3-display-topleft w3-green"><?php echo htmlspecialchars($jogos[0]->getPlataforma(TRUE), ENT_QUOTES, 'UTF-8'); ?></span>
+            <span class="w3-tag w3-display-topleft w3-green"><?php echo htmlspecialchars($jogo->getPlataforma(TRUE), ENT_QUOTES, 'UTF-8'); ?></span>
 
             <!-- Botão centralizado sobre a imagem para ação do usuário -->
             <div class="w3-display-middle w3-display-hover">
@@ -35,6 +35,7 @@
         <!-- Exibe o nome do jogo abaixo da imagem, com estilo centralizado e com fundo azul -->
         <p class="w3-center w3-padding w3-blue"><?php echo htmlspecialchars($jogo->getNome(), ENT_QUOTES, 'UTF-8'); ?></p>
     </div>
-  <?php } ?>
+  <?php endforeach; ?>
+</div>
 </body>
 </html>
