@@ -193,4 +193,4 @@ docker compose up
 
 ### 3. Ambiente de Produção (Hospedagem Web)
 O sistema está publicado e operacional através do serviço InfinityFree para fins de demonstração e construção de portfólio.
-Link do projeto: http://catalogo-jogo.freehosting.dev
+Link do projeto: [catalogo-jogo.freehosting.dev](https://catalogo-jogo.freehosting.dev/)
